@@ -77,7 +77,7 @@ impl Builder {
     pub fn render(&self, w: &mut dyn std::io::Write) -> Result<(), Box<dyn Error>> {
         w.write(b"0")?;
         let bw = EncoderWriter::new(w, base64::STANDARD);
-        let ze = ZlibEncoder::new(bw, Compression::default());
+        let ze = ZlibEncoder::new(bw, Compression::best());
         let wrapper: HashMap<_, _> = Some(("blueprint", &self)).into_iter().collect();
         serde_json::to_writer(ze, &wrapper)?;
         Ok(())
