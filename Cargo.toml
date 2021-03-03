@@ -1,5 +1,5 @@
 [package]
-name = "factorio-rs"
+name = "facto"
 version = "0.1.0"
 authors = ["David Terrell <dbt@meat.net>"]
 edition = "2018"
@@ -7,3 +7,9 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+base64 = "0.13.0"
+clap="2.33.0"
+flate2 = "1.0.20"
+qrcode-generator="4.0.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.59"
