@@ -1,8 +1,38 @@
 extern crate qrcode_generator;
 
+use std::io;
+
+use clap::{Arg, SubCommand};
+
 use qrcode_generator::*;
 
 use crate::bp::builder::Builder;
+use crate::cli::*;
+
+pub fn cmd<'a, 'b>() -> CliApp<'a, 'b> {
+    return CliApp {
+        app: SubCommand::with_name("qr").arg(
+            Arg::with_name("URL")
+                .required(true)
+                .help("URL to be converted to QR code"),
+        ),
+        callback: Box::new(|m: &ArgMatches| run(m)),
+    };
+}
+
+fn run(matches: &ArgMatches) {
+    let url = matches.value_of("URL").unwrap();
+    let mut b = Builder::new(
+        url,
+        format!("QR code made from [item=stone-wall] that links to {}", url),
+    );
+    b.add_qr_code(0.5, 0.5, url);
+    b.add_icon("stone-wall");
+    b.add_icon("stone-wall");
+    b.add_icon("stone-wall");
+    b.add_icon("stone-wall");
+    b.render(&mut io::stdout()).expect("render");
+}
 
 pub trait QrGenerator {
     fn add_qr_code(&mut self, x: f32, y: f32, val: &str);
