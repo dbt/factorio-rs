@@ -1,11 +1,9 @@
-use serde::Serialize;
-use std::collections::HashMap;
-
 use base64::write::EncoderWriter;
 use flate2::write::ZlibEncoder;
 use flate2::Compression;
-
 use serde::ser::StdError as Error;
+use serde::Serialize;
+use std::collections::HashMap;
 
 #[derive(Debug, Serialize)]
 struct Position {
@@ -43,13 +41,17 @@ pub struct Builder {
 }
 
 impl Builder {
-    pub fn new(label: &str, description: String) -> Builder {
+    pub fn new<S1, S2>(label: S1, description: S2) -> Builder
+    where
+        S1: AsRef<str>,
+        S2: AsRef<str>,
+    {
         return Builder {
             icons: vec![],
             entities: vec![],
             item: "blueprint",
-            label: String::from(label),
-            description: description,
+            label: label.as_ref().to_string(),
+            description: description.as_ref().to_string(),
         };
     }
 

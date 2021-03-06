@@ -1,11 +1,17 @@
 extern crate clap;
 extern crate facto;
 
-use facto::cli;
 use facto::qr;
+use structopt::StructOpt;
+
+#[derive(Debug, StructOpt)]
+enum Facto {
+    Qr(qr::Opts),
+}
 
 fn main() {
-    let root = cli::cmd_group("facto", vec![qr::cmd()]);
-    let m = root.app.get_matches();
-    (root.callback)(&m);
+    let opt = Facto::from_args();
+    match opt {
+        Facto::Qr(opts) => qr::run(&opts),
+    }
 }
